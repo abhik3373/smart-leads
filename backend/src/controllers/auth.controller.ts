@@ -6,7 +6,7 @@ import { RegisterInput, LoginInput } from '../schemas/auth.schema';
 import { asyncHandler } from '../utils/asyncHandler';
 
 const signToken = (id: string, email: string, role: string) =>
-  jwt.sign({ id, email, role }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
+  jwt.sign({ id, email, role }, env.JWT_SECRET as string, { expiresIn: '7d' });
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body as RegisterInput;

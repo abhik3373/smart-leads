@@ -5,7 +5,7 @@ interface SuccessOptions<T> {
   statusCode?: number;
   message?: string;
   data?: T;
-  meta?: object;
+  meta?: Record<string, unknown>;
 }
 
 export const sendSuccess = <T>({
@@ -15,12 +15,10 @@ export const sendSuccess = <T>({
   data,
   meta,
 }: SuccessOptions<T>): void => {
-  res.status(statusCode).json({
-    success: true,
-    message,
-    ...(data !== undefined && { data }),
-    ...(meta && { meta }),
-  });
+  const body: Record<string, unknown> = { success: true, message };
+  if (data !== undefined) body.data = data;
+  if (meta) body.meta = meta;
+  res.status(statusCode).json(body);
 };
 
 export const sendError = (
@@ -29,9 +27,7 @@ export const sendError = (
   message: string,
   errors?: unknown
 ): void => {
-  res.status(statusCode).json({
-    success: false,
-    message,
-    ...(errors && { errors }),
-  });
+  const body: Record<string, unknown> = { success: false, message };
+  if (errors) body.errors = errors;
+  res.status(statusCode).json(body);
 };

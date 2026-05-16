@@ -60,6 +60,6 @@ export const leadsService = {
   async exportCSV(filters: Omit<LeadFilters, 'page' | 'limit'>) {
     const query = buildQuery(filters);
     const leads = await Lead.find(query).sort({ createdAt: -1 }).lean();
-    return leadsToCSV(leads as ILead[]);
+    return leadsToCSV(leads as unknown as ILead[]);
   },
 };
