@@ -2,6 +2,11 @@
 
 A full-stack Lead Management Dashboard built with the MERN stack and TypeScript.
 
+## 🚀 Live Demo
+
+- **Frontend**: https://smart-leads-three.vercel.app
+- **Backend**: https://smart-leads-production.up.railway.app
+
 ## Tech Stack
 
 **Frontend**: React 18, TypeScript, TailwindCSS, Zustand, React Router v6, Axios  
@@ -17,6 +22,7 @@ A full-stack Lead Management Dashboard built with the MERN stack and TypeScript.
 - Backend pagination (10 per page) with metadata
 - CSV export (filtered)
 - Responsive UI with loading + empty states
+- Dark Mode support
 
 ## Getting Started
 
@@ -50,7 +56,7 @@ docker-compose up --build
 ```
 
 Backend → http://localhost:5000  
-Frontend → run separately with `npm run dev` or deploy to Vercel
+Frontend → http://localhost:5173
 
 ## API Reference
 
@@ -65,17 +71,6 @@ Frontend → run separately with `npm run dev` or deploy to Vercel
 | POST | /api/leads | ✓ | Any | Create lead |
 | PATCH | /api/leads/:id | ✓ | Any | Update lead |
 | DELETE | /api/leads/:id | ✓ | Admin | Delete lead |
-
-### Query params for GET /api/leads
-
-| Param | Values | Description |
-|-------|--------|-------------|
-| status | New, Contacted, Qualified, Lost | Filter by status |
-| source | Website, Instagram, Referral | Filter by source |
-| search | string | Search name or email |
-| sort | latest, oldest | Sort order |
-| page | number | Page number (default: 1) |
-| limit | number | Per page (default: 10) |
 
 ## Project Structure
 
@@ -93,7 +88,7 @@ smart-leads/
 ├── frontend/src/
 │   ├── api/            # Axios instance + typed API calls
 │   ├── components/     # Reusable UI components
-│   ├── hooks/          # useDebounce
+│   ├── hooks/          # useDebounce, useDarkMode
 │   ├── pages/          # LoginPage, RegisterPage, DashboardPage
 │   ├── store/          # Zustand stores
 │   └── types/          # Shared TypeScript interfaces
