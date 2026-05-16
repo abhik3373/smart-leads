@@ -12,14 +12,14 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { EmptyState } from '@/components/EmptyState';
 
 export const DashboardPage = () => {
-  const { leads, meta, loading, error, fetchLeads, deleteLead } = useLeadsStore();
+  const { leads, meta, loading, error, fetchLeads, deleteLead, fetchStats, stats } = useLeadsStore();
   const { user, logout } = useAuthStore();
   const { dark, toggle } = useTheme();
   const [formOpen, setFormOpen] = useState(false);
   const [editLead, setEditLead] = useState<Lead | null>(null);
   const [viewLead, setViewLead] = useState<Lead | null>(null);
 
-  useEffect(() => { fetchLeads(); }, []); // eslint-disable-line
+  useEffect(() => { fetchLeads(); fetchStats(); }, []); // eslint-disable-line
 
   const handleEdit = (lead: Lead) => { setEditLead(lead); setFormOpen(true); setViewLead(null); };
   const handleView = (lead: Lead) => setViewLead(lead);
@@ -30,11 +30,6 @@ export const DashboardPage = () => {
     if (!confirm('Delete this lead? This cannot be undone.')) return;
     await deleteLead(id);
   };
-
-  const statusCounts = leads.reduce((acc, l) => {
-    acc[l.status] = (acc[l.status] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors">
@@ -88,10 +83,10 @@ export const DashboardPage = () => {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { label: 'Total Leads', value: meta?.total ?? leads.length, color: 'text-gray-900 dark:text-gray-100' },
-            { label: 'New', value: statusCounts['New'] ?? 0, color: 'text-blue-600 dark:text-blue-400' },
-            { label: 'Qualified', value: statusCounts['Qualified'] ?? 0, color: 'text-green-600 dark:text-green-400' },
-            { label: 'Lost', value: statusCounts['Lost'] ?? 0, color: 'text-red-500 dark:text-red-400' },
+            { label: 'Total Leads', value: stats.total, color: 'text-gray-900 dark:text-gray-100' },
+            { label: 'New', value: stats.New, color: 'text-blue-600 dark:text-blue-400' },
+            { label: 'Qualified', value: stats.Qualified, color: 'text-green-600 dark:text-green-400' },
+            { label: 'Lost', value: stats.Lost, color: 'text-red-500 dark:text-red-400' },
           ].map(({ label, value, color }) => (
             <div key={label} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 px-4 py-3">
               <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
